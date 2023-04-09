@@ -3,11 +3,9 @@ package by.salash.task.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -22,10 +20,10 @@ import java.util.UUID;
 /**
  * Class describing the object User
  */
+
 @Entity
 @Table(name = "users")
-@Setter
-@Getter
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Users {

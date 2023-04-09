@@ -35,6 +35,7 @@ public class AvatarController implements AvatarApi {
     @Autowired
     private UserRepository userRepository;
 
+
     // GET /api/users/:userId/avatars
     @Override
     public List<Avatar> getAll(@PathVariable("userId") Long userId) throws InterruptedException {

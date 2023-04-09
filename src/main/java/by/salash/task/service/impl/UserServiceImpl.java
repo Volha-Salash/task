@@ -1,6 +1,7 @@
 package by.salash.task.service.impl;
 
 import by.salash.task.entity.Users;
+import by.salash.task.exceptions.NotFoundException;
 import by.salash.task.repository.UserRepository;
 import by.salash.task.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * @author : Volha Salash
@@ -32,8 +32,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Users getUserById(Long uuid) throws InterruptedException {
-        Optional<Users> optUser = userRepository.findById(uuid);
+    public Users getUserById(Long id) throws InterruptedException {
+        Optional<Users> optUser = userRepository.findById(id);
+        if (userRepository.findById(id)  == null) {
+            throw new NotFoundException("User with this id does not exist");
+        }
         Thread.sleep(1000);
         log.info("User with required id found");
         return optUser.get();
@@ -48,21 +51,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String updateUser(Long id, String state) throws InterruptedException {
-        try {
-            userRepository.findById(id).ifPresent(
-                    user -> {
-                        user.setState(state);
-                        userRepository.save(user);
-                    }
-            );
-        } catch (Exception ex) {
-            return "Error updating the user: " + ex;
+    public Optional<Users> updateUser(Long id, String state) {
+        if (userRepository.findById(id)  == null) {
+            throw new NotFoundException("User with this id does not exist");
         }
-        Thread.sleep(1000);
-        log.info("User new state: " + state + " - User successfully updated!");
-        return "User id: " + Optional.of(id) + "New state: " + state + " - User successfully updated!";
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setState(state);
+                    log.info("User id " + user.getId() + " with new state " + user.getState() + " update successfully");
+
+                    // Save and return updated user object
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return userRepository.save(user);
+                });
     }
 
 }
+
 
