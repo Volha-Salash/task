@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
-import java.util.UUID;
+import java.util.Optional;
 
 /**
  * @author : Volha Salash
@@ -46,9 +46,7 @@ public interface UserService {
      * updates the user
      *
      * @param state String offline/online to be updated
-     * @return updated new state
+     * @return updated user
      */
-    String updateUser(@Valid Long id, @Valid String state) throws InterruptedException;
-
-
+    Optional<Users> updateUser(@Valid Long id, String state);
 }

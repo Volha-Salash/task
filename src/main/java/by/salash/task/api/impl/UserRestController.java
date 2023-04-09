@@ -10,11 +10,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
+import java.util.Optional;
 
 /**
  * @author : Volha Salash
@@ -48,8 +49,8 @@ public class UserRestController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<String> updateUser(@RequestBody Long usersId, String state) throws InterruptedException {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(usersId, state));
+    public ResponseEntity<Optional<Users>> updateUser(@PathVariable(name = "usersId") Long id, @RequestBody String state) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(id, state));
 
     }
 }
